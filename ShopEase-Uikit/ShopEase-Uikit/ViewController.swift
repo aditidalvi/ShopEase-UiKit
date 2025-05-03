@@ -1,0 +1,18 @@
+//
+//  ViewController.swift
+//  ShopEase-Uikit
+//
+//  Created by Aditi Dalvi on 03/05/25.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        self.view.backgroundColor = .systemRed
+    }
+}
+
