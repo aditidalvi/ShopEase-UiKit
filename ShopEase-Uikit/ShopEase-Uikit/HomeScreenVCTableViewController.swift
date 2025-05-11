@@ -9,12 +9,16 @@ import UIKit
 
 class HomeScreenVCTableViewController: UITableViewController {
     let viewModel = HomeScreenViewModel()
+    let identifier = "ProductCell"
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "ShopEase"
         viewModel.fetchProducts(completion: { [weak self] in
             self?.tableView.reloadData()
         })
+        tableView.register(ProductViewCell.self, forCellReuseIdentifier: identifier)
+        tableView.rowHeight = 100
+        tableView.showsVerticalScrollIndicator = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -28,22 +32,24 @@ class HomeScreenVCTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of sections
         return viewModel.products.count
     }
-    
+        
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.products[section].category.capitalized
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UITableViewCell()
-        /*
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-         */
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.products[section].products.count
     }
-
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let product = viewModel.products[indexPath.section].products[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ProductViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: product)
+        return cell
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
